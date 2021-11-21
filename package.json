@@ -1,0 +1,19 @@
+{
+  "name": "twilio-webhook-api",
+  "description": "",
+  "version": "0.1.0",
+  "dependencies": {},
+  "devDependencies": {
+    "cliui": "^7.0.4",
+    "is-fullwidth-code-point": "^3.0.0",
+    "libnpx": "^10.2.4",
+    "serverless-domain-manager": "^5.0.0",
+    "serverless-dotenv-plugin": "^3.1.0",
+    "serverless-offline": "^6.8.0",
+    "serverless-python-requirements": "^5.1.0",
+    "serverless-sam": "^0.2.0",
+    "string-width": "^4.2.0",
+    "wrap-ansi": "^7.0.0",
+    "yargs": "^16.1.0"
+  }
+}

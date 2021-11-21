@@ -1,0 +1,4 @@
+pytest
+boto3
+aws-xray-sdk
+twilio

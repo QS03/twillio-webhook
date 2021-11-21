@@ -1,0 +1,57 @@
+service: twilio-webhook
+
+frameworkVersion: "2"
+
+plugins:
+  - serverless-python-requirements
+  - serverless-sam
+  - serverless-domain-manager
+  - serverless-offline
+  - serverless-dotenv-plugin
+
+custom: ${file(../serverless.common.yml):custom}
+
+package:
+  individually: true
+  include:
+    - "./handler.py"
+    - "./unzip_requirements.py"
+    - "./.requirements.zip"
+  exclude:
+    - "**"
+
+provider:
+  name: aws
+  runtime: python3.8
+  stage: dev
+  region: us-east-1
+  vpc: ${file(../serverless.common.yml):vpc}
+  apiGateway: ${file(../serverless.common.yml):apiGateway}
+  tracing:
+    apiGateway: true
+    lambda: true
+
+  environment:
+    stage: ${self:custom.stage}
+    resourcesStage: ${self:custom.resourcesStage}
+    TWILIO_ACCOUNT_KEY: ACe5d4ae14df1796f631e7f7548d01e130 # TODO: Replace with account key
+
+  iamRoleStatements:
+    - ${file(../serverless.common.yml):lambdaPolicyXRay}
+    - ${file(../serverless.common.yml):lambdaPolicyDynamoDb}
+    - ${file(../serverless.common.yml):lambdaPolicyLambda}
+
+
+functions:
+  twilio-webhook:
+    handler: handler.twilio_webhook_handler
+    events:
+      - http:
+          path: twilio/webhook
+          method: post
+          cors: true
+
+    # layers:
+    #  - { Ref: PythonRequirementsLambdaLayer }
+
+resources: ${file(../serverless.common.yml):resources}
